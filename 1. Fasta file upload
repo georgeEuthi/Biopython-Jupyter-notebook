@@ -1,11 +1,14 @@
+# Improt the SeqIO module 
 from Bio import SeqIO
 
+# Parse the fasta file using the absolute path and create a list containing all the seauences. The "id" command is used to determine the sequence id 
 with open ("C:your path/file.fasta") as example:
     sequences = list(SeqIO.parse(example, "fasta"))
     for seq in sequences:
         print(seq.id)
 
     print("\t")
-    
+
+# Find the number of total sequences in the selected fasta file
     number_seq = len(sequences)
     print("Total number of sequences:", number_seq)
