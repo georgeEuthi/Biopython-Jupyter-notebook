@@ -1,3 +1,9 @@
+###### Upload the desired fasta file from your desktop. Ensure that the correct 
+separators are included in the absolute path, spesifically "/" or "\\" and not 
+the "\", which is translated as en escape character in Python language e.g.
+correct: "C:/your path/file.fasta" or "C:\\your path\\file.fasta"
+wrong: "C:\your path\file.fasta" ######
+
 # Improt the SeqIO module 
 from Bio import SeqIO
 
