@@ -1,0 +1,9 @@
+### IMPORT BIOPYTHON PACKAGE, UPLOAD THE DESIRED FASTA FILE AND FIND INITIAL INFORMATION ABOUT YOUR PROTEINS ### 
+
+from Bio import SeqIO
+
+with open ("your path/file.fasta") as example:
+ for seq in SeqIO.parse(example,  "fasta"):
+    print(seq.id)
+    number_seq = sum(1 for _ in SeqIO.parse (seq, "fasta")
+    print("Number of sequences:", num_combined)
