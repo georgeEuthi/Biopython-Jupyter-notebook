@@ -8,6 +8,7 @@ This repository contains various scripts for processing FASTA files containing p
    conda install -c conda-forge biopython
 
 Verifying installation:
+
 import Bio
 print(Bio.__version__)
 
