@@ -6,6 +6,7 @@ wrong: "C:\your path\file.fasta" ######
 
 # Improt the SeqIO module 
 from Bio import SeqIO
+help(SeqIO)
 
 # Parse the fasta file using the absolute path and create a list containing all the seauences. The "id" command is used to determine the sequence id 
 with open ("C:your path/file.fasta") as example:
