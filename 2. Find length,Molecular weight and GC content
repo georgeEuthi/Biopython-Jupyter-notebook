@@ -7,7 +7,7 @@ from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
-fasta_file_path = "C:/Users/gefth/OneDrive/Υπολογιστής/AlmaMater/MSc-Evolutionary_Systems_Biology/MES7/Data/Phytopthora/Machine_learning/Phytophthora_positive_negative.fasta"
+fasta_file_path = "C:path/file.fasta"
 
 with open (fasta_file_path) as example:
     sequences = list(SeqIO.parse(example, "fasta"))
