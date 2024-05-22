@@ -1,1 +1,22 @@
+### First, import the necessary modules: SeqIO from Bio to handle fasta files and CodonTable from Bio.Data to facilitate translation, 
+and colored from termcolor to improve the visualization of sequence IDs. Then, load the nucleotides fasta file and parse its sequences. 
+Next, we utilize the CodonTable module to access the standard genetic code table for translation. We customize the translation process 
+by changing the default stop codon symbol from '*' to '' for better compatibility with downstream bioinformatics tools. Finally, translate 
+each sequence and print them alongside their corresponding IDs, enhancing clarity with colored visualization for easier analysis. ###
 
+from Bio import SeqIO
+from Bio.Data import CodonTable
+from termcolor import colored
+
+fasta_file_path = "C:path/nucleotides.fasta"
+
+with open (fasta_file_path) as nucleotides:
+    nuc_sequences = list(SeqIO.parse(nucleotides, "fasta"))
+    for nuc_seq in nuc_sequences:
+        print(colored(nuc_seq.id,'black',attrs = ['bold']))                                            
+        print(colored("Nucleotide sequence:", 'blue'))
+        print(nuc_seq.seq)
+        print(colored("Protein sequence:", 'green'))
+        prot_sequences = nuc_seq.seq.translate(table= "Standard", stop_symbol = '')
+        print(prot_sequences)
+        print("\t")
