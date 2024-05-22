@@ -1,1 +1,29 @@
+### Find the length, GC% (for both nucleotide & protein sequences) and the molecular weight (only for protein sequences).
+In case you know that your files contains proteni sequences from the beggining, you may inlude all calculations in one
+loop ###
 
+
+from Bio import SeqIO
+from Bio.SeqUtils import gc_fraction
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
+
+fasta_file_path = "C:/Users/gefth/OneDrive/Υπολογιστής/AlmaMater/MSc-Evolutionary_Systems_Biology/MES7/Data/Phytopthora/Machine_learning/Phytophthora_positive_negative.fasta"
+
+with open (fasta_file_path) as example:
+    sequences = list(SeqIO.parse(example, "fasta"))
+    
+for seq_record in sequences:
+    print(f"Sequence name: {seq_record.id}")
+    print(f"length: {len(seq_record)}")       
+    print(f"GC%: {round(gc_fraction(seq_record),2)}%")
+
+# In the case one works with protein sequences, the molecular weight calculation is considered also an important character to take into account
+
+print ("\t")
+
+for seq_record in sequences:
+    print(f"Sequence name: {seq_record.id}")
+    protein_seqs = str(seq_record.seq)
+    protein_analyzer = ProteinAnalysis(protein_seqs)
+    mw = protein_analyzer.molecular_weight()
+    print(f"Molecular weight: {mw:.2f}")
