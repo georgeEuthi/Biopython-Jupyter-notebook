@@ -1,0 +1,79 @@
+### Load the appropriate module of Bio.SeqUtils.ProtParam for protein processing, the ProteinAnalysis. Calculate the percentages of 
+amino acids in your protein sequences. You can either group them based on their specific characteristics, such as charge or polarity, 
+or based on their length, or calculate each percentage individually. It should be noted that these groups can vary based on different 
+bibliographical sources, so it is important to define the grouping criteria beforehand ###
+
+
+### Calculate the percentage of spesific amino acid groups. Ensure you pass the sequence string (str(seq.seq)) to the ProteinAnalysis constructor.
+Use the command get_amino_acid_percentages() to create a dictionary of amino acid percentages.Sum the percentages for the desired amino acids using
+a list comprehension inside the sum() function. Finalyl multiply by 100 to get the desired result ###
+
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
+
+fasta_file_path = "C:/your path/protein.fasta"
+
+with open (fasta_file_path) as example:
+    sequences = list(SeqIO.parse(example, "fasta"))
+    for seq in sequences:
+
+        aa = ProteinAnalysis(str(seq.seq))
+        aa_percent = aa.get_amino_acids_percent()
+        positive_aa = sum(aa_percent[residue] for residue in ['K','R'])*100
+        negative_aa = sum(aa_percent[residue] for residue in ['D','E'])*100
+        polar_aa = sum(aa_percent[residue] for residue in ['N','Q','S','T','C'])*100
+        non_polar_aa = sum(aa_percent[residue] for residue in ['G','P','A','I','L','V','M'])*100
+        aromatic_aa = sum(aa_percent[residue] for residue in ['F','H','W','Y'])*100
+
+        print(seq.id)
+        print(f"Positively charged amino acids percentage: {positive_aa:.2f}%")
+        print(f"Negatively charged amino acids percentage: {negative_aa:.2f}%")
+        print(f"Polar amino acids percentage: {polar_aa:.2f}%")
+        print(f"Non-polar amino acids percentage: {non_polar_aa:.2f}%")
+        print(f"Aromatic amino acids percentage: {aromatic_aa:.2f}%")
+        print("\t")
+        
+
+### Calculate each amino acid percentage individually. The code utilizes Biopython's SeqIO for parsing FASTA files and ProteinAnalysis for
+analyzing protein sequences, storing amino acid composition data in a dictionary. The FASTA file path is specified, and an empty dictionary 
+amino_acid_data is initialized to hold the composition data for each sequence. For each sequence in the FASTA file, the sequence data is converted 
+to a string, analyzed for amino acid content using ProteinAnalysis, and the results are stored in amino_acid_data with sequence IDs as keys. This 
+structure efficiently organizes, accesses, and manipulates amino acid data, facilitating further analysis or visualization. The results are printed
+with protein IDs and amino acid percentages in a formatted manner ###
+
+from Bio import SeqIO
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
+import pandas as pd
+
+# Path to the input FASTA file
+fasta_file_path = "C:path to/proteins.fasta"
+
+# Dictionary to store amino acid percentages for each sequence
+amino_acid_data = {}
+
+# Parse the FASTA file and analyze each sequence
+for seq_record in SeqIO.parse(fasta_file_path, "fasta"):
+    protein_sequence = str(seq_record.seq)
+    protein_analyzer = ProteinAnalysis(protein_sequence)
+    amino_acid_content = protein_analyzer.get_amino_acids_percent()
+    amino_acid_data[seq_record.id] = amino_acid_content
+
+# Create a DataFrame from the dictionary
+aa_table = pd.DataFrame.from_dict(amino_acid_data, orient='index')
+
+# Configure Pandas display options
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+
+# Style the DataFrame
+styled_aa_table = aa_table.style.format(precision=2)
+
+# Display the dimensions of the table
+print("Dimensions of styled_aa_table:", aa_table.shape)
+
+# Display the styled table
+display(styled_aa_table)
+
+### Why We Use a Dictionary (amino_acid_data = {})?
+1) Organization: Store efficiently the amino acid composition for each protein sequence by its ID.
+2) Flexibility: The dictionary structure makes it easy to extend the code for further analysis.
+3) Clarity: Keep the data organized in a way that clearly associates each sequence ID with its corresponding amino acid composition. ####
