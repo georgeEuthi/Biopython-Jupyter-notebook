@@ -1,7 +1,54 @@
-# Molar extinction
-# GRAVY
-# Instability index
-# Secondary structure prediction
-# Average bulkiness
+### Use ProteinAnalysis to explore further important aspects of the selected
+protein dataset. ###
 
-### and their definitions
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
+from Bio import SeqIO
+from termcolor import colored
+
+fasta_file_path = "C:/Users/gefth/OneDrive/Υπολογιστής/AlmaMater/MSc-Evolutionary_Systems_Biology/MES7/Data/Phytopthora/Machine_learning/Phytophthora_positive_negative.fasta"
+
+with open (fasta_file_path) as example:
+    sequences = list(SeqIO.parse(example, "fasta"))
+    for seq_record in sequences:
+        protein_analyzer = ProteinAnalysis(str(seq_record.seq))
+
+### Calculate the instability index according to Guruprasad et al 1990.
+        instability_index = protein_analyzer.instability_index()
+
+### Calculate the GRAVY (Grand Average of Hydropathy) according to Kyte and Doolitle, 1982. 
+        gravy = protein_analyzer.gravy()
+
+### The molar extinction coefficient (ε) is an important parameter for quantifying the concentration 
+of a protein in solution using spectrophotometry. It indicates how strongly the protein absorbs light 
+at a specific wavelength. For proteins, this is typically measured at 280 nm, where aromatic amino acids 
+(tryptophan, tyrosine) and disulfide bonds (cystine) absorb UV light. The command calculates the molar
+extinction coefficient by summing contributions from tryptophan, tyrosine, and cystine residues. 
+The formula typically used is: ε = (nw x εw) + (ny + εy) + (ncys-cys + εcys_cys) Where:
+- nw,ny,ncys-cys = number of tryptophans, tyrosines and cystine residues respectively
+- εw, εy, εcys-cys = the extinction coefficients for tryptophan, tyrosine, and cystine respectively. The result
+would be a tuple e.g. (1021, 1930) representing the molar extinction coefficients for the reduced and oxidized forms,
+adressing two different assumptions about the state of cysteine residues in the protein: all reduced or all forming disulfide bonds.###
+
+        molar_ext = protein_analyzer.molar_extinction_coefficient()
+
+#
+        isoelectric_point = protein_analyzer.isoelectric_point()
+
+### Calculate the fraction of helix, sheet and coil of your protein molecule.
+Amino acids in helix: E, M, A, L, K
+Amino acids in turn: N, P, G, S, D
+Amino acids in sheet: V, I, Y, F, W, L, T ###
+        
+        secondary_structure_prediction = protein_analyzer.secondary_structure_fraction()
+        alpha_helix, beta_sheet, coil = secondary_structure_prediction
+
+        
+        print(colored(seq_record.id, color= "black", attrs=["bold"]))
+        print(f"Instainstability index: {instability_index:.2f}")
+        print(f"GRAVY: {gravy:.2f}")
+        print(f"Molar extinction: {molar_ext}")
+        print(f"Isoelectric point: {isoelectric_point:.2f}")
+        print(f"Alpha helix prediction: {alpha_helix:.2f}%")
+        print(f"Beta sheet prediction: {beta_sheet:.2f}%")
+        print(f"Coil percentage: {beta_sheet:.2f}%")
+        print("\t")
